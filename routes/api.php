@@ -23,7 +23,7 @@ Route::apiResource('categories', 'Api\CategoryController');
 //Tag
 Route::apiResource('tags', 'Api\TagController');
 
-//Advertisement
+//Advertisement 
 Route::get('advertisements/filter', 'Api\AdvertisementController@filter')->name('advertisements.filter');
 Route::apiResource('advertisements', 'Api\AdvertisementController');
 

@@ -47,7 +47,7 @@ class AdvertiserController extends Controller
         try{
             $data = Advertiser::find($id);
 
-            //if not date return
+            //if not date return 
             if(!$data){
                 return $this->failed('Data not found');
             }

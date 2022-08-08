@@ -8,7 +8,7 @@ use App\Http\Resources\Api\Category as CategoryResource;
 class Advertisement extends JsonResource
 {
     /**
-     * Transform the resource into an array.
+     * Transform the resource into an array. 
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
