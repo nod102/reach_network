@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Advertiser;
+use App\Models\Advertisement;
 use App\Http\Resources\Api\Advertiser as AdvertiserResource;
 use App\Traits\Api\ResponsesTrait;
 use \Exception;
@@ -21,29 +22,6 @@ class AdvertiserController extends Controller
     public function index()
     {
         $data = Advertiser::with(['advertisements.categories'])->get();
-        return $this->success(AdvertiserResource::collection($data), 'Date Retrieved Successfully');
-    }
-
-    public function filter(Request $request)
-    {
-        $category_id = $request->category_id;
-        $tag_id = $request->tag_id;
-        $data = Advertiser::with(['advertisements.categories'])
-                            ->whereHas('advertisements', function($query){
-                                $query->where('start_date','<=',date('Y-m-d'));
-                            })
-                            ->when(request('category_id'), function ($query) use($category_id){
-                                $query->whereHas('advertisements.categories', function($query) use($category_id){
-                                    $query->where('id', $category_id);
-                                });
-                            })
-                            ->when(request('tag_id'), function ($query) use($tag_id){
-                                $query->whereHas('advertisements', function($query) use($tag_id){
-                                    $query->whereJsonContains('tags', $tag_id);
-                                    $query->where('start_date','<=',date('Y-m-d'));
-                                });
-                            })
-                            ->get();
         return $this->success(AdvertiserResource::collection($data), 'Date Retrieved Successfully');
     }
 

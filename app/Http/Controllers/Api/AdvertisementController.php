@@ -21,9 +21,31 @@ class AdvertisementController extends Controller
      */
     public function index()
     {
-        $data = Advertisement::with('categories')->where('start_date','<=',date('Y-m-d'))->get();
+        $data = Advertisement::with(['categories', 'advertisers'])
+                            ->where('start_date','<=',date('Y-m-d'))
+                            ->get();
+
         return $this->success(AdvertisementResource::collection($data), 'Date Retrieved Successfully');
     }
+
+    public function filter(Request $request)
+    {
+        $category_id = $request->category_id;
+        $tag_id = $request->tag_id;
+
+        $data = Advertisement::with(['categories', 'advertisers'])
+                            ->where('start_date','<=',date('Y-m-d'))
+                            ->when(request('category_id'), function ($query) use($category_id){
+                                $query->where('category_id', $category_id);
+                            })
+                            ->when(request('tag_id'), function ($query) use($tag_id){
+                                $query->whereJsonContains('tags', $tag_id);
+                            })
+                            ->get();
+
+        return $this->success(AdvertisementResource::collection($data), 'Date Retrieved Successfully');
+    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -44,7 +66,18 @@ class AdvertisementController extends Controller
      */
     public function show($id)
     {
-        //
+        try{
+            $data = Advertisement::find($id);
+
+            //if not date return
+            if(!$data){
+                return $this->failed('Data not found');
+            }
+
+            return $this->success(new AdvertisementResource($data), 'Date Retrieved Successfully');
+        }catch(\Exception $e){
+            return $this->failed($e->getMessage());
+        }
     }
 
     /**

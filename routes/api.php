@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 
 
 //Advertiser
-Route::get('advertisers/filter', 'Api\AdvertiserController@filter')->name('advertisers.filter');
 Route::apiResource('advertisers', 'Api\AdvertiserController');
 
 //Category
@@ -25,6 +24,7 @@ Route::apiResource('categories', 'Api\CategoryController');
 Route::apiResource('tags', 'Api\TagController');
 
 //Advertisement
+Route::get('advertisements/filter', 'Api\AdvertisementController@filter')->name('advertisements.filter');
 Route::apiResource('advertisements', 'Api\AdvertisementController');
 
 
